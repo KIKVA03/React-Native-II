@@ -1,8 +1,21 @@
 import React from "react";
 import { Text, StyleSheet, View, Button } from "react-native";
-import { useState } from "react";
+import { useState, useReducer } from "react";
+
+const amount = 10;
+const reducer = (state, action) => {
+    switch (action.type) {
+        case "increment":
+            return { count: state.count + action.payload };
+        case "decrement":
+            return { count: state.count - action.payload };
+        default:
+            throw new Error();
+    }
+};
 const HomeScreen = ({ navigation }) => {
-    const [counter, setCounter] = useState(0);
+    const [state, dispatch] = useReducer(reducer, { count: 0 });
+    const { count } = state;
     return (
         <View style={styles.container}>
             <Text style={styles.text}>HOME SCREEN</Text>
@@ -20,10 +33,16 @@ const HomeScreen = ({ navigation }) => {
             </View>
             {/* COUNTER */}
             <View style={styles.buttton}>
-                <Text>{counter}</Text>
-                <Button title="increas" onPress={() => setCounter((prev) => ++prev)} />
+                <Text>{count}</Text>
+                <Button
+                    title="increas"
+                    onPress={() => dispatch({ type: "increment", payload: amount })}
+                />
             </View>
-            <Button title="decreas" onPress={() => setCounter((prev) => --prev)} />
+            <Button
+                title="decreas"
+                onPress={() => dispatch({ type: "decrement", payload: amount })}
+            />
         </View>
     );
 };

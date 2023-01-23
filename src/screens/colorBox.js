@@ -7,13 +7,21 @@ const changeAmount = 25;
 const reducer = (state, action) => {
     switch (action.type) {
         case "red":
-            return { ...state, red: state.red + action.amount };
+            return state.red + action.payload > 255 || state.red + action.payload < 0
+                ? state
+                : { ...state, red: state.red + action.payload };
 
         case "green":
-            return { ...state, green: state.green + action.amount };
+            return state.green + action.payload > 255 || state.green + action.payload < 0
+                ? state
+                : { ...state, green: state.green + action.payload };
 
         case "blue":
-            return { ...state, blue: state.blue + action.amount };
+            return state.blue + action.payload > 255 || state.blue + action.payload < 0
+                ? state
+                : { ...state, blue: state.blue + action.payload };
+        default:
+            return state;
     }
 };
 
@@ -25,18 +33,19 @@ const ColorBox = () => {
     return (
         <View>
             <ChangeColorComponent
-                increase={() => dispatch({ type: "red", amount: changeAmount })}
-                decrease={() => dispatch({ type: "red", amount: -1 * changeAmount })}
+                increase={() => dispatch({ type: "red", payload: changeAmount })}
+                decrease={() => dispatch({ type: "red", payload: -1 * changeAmount })}
                 color="red"
             />
             <ChangeColorComponent
-                increase={() => dispatch({ type: "green", amount: changeAmount })}
-                decrease={() => dispatch({ type: "green", amount: -1 * changeAmount })}
+                increase={() => dispatch({ type: "green", payload: changeAmount })}
+                decrease={() => dispatch({ type: "green", payload: -1 * changeAmount })}
                 color="green"
             />
             <ChangeColorComponent
-                increase={() => dispatch({ type: "blue", amount: changeAmount })}
-                decrease={() => dispatch({ type: "blue", amount: -1 * changeAmount })}
+                increase={() => dispatch({ type: "blue", payload: changeAmount })}
+                decrease={() => dispatch({ type: "blue", payload: -1 * changeAmount })}
+                color="blue"
             />
             <View
                 style={{
